@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/generated/
+/prisma/*.db
+/prisma/*.db-journal
 /.pnp
 .pnp.*
 .yarn/*
@@ -32,6 +35,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel

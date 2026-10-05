@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Preapix
 
-## Getting Started
+Preapix is a Supabase-backed mock API workspace for frontend teams. Define response shapes, generate random data with the same structure, preview scenarios, and share short mock endpoints with your frontend.
 
-First, run the development server:
+## Local setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Install Node.js 20.9 or newer.
+2. Copy `.env.example` to `.env` and set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+3. In Supabase Dashboard → SQL Editor, run [`supabase/migrations/20261005000100_workspace_storage.sql`](supabase/migrations/20261005000100_workspace_storage.sql).
+4. Install dependencies with `pnpm install`.
+5. In Supabase Dashboard → Authentication → URL Configuration, add `http://localhost:3000/auth/callback` to the allowed redirect URLs.
+6. Start the development server with `pnpm dev` and open `http://localhost:3000`.
+7. Create an account, then confirm your email if email confirmation is enabled in Supabase.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Useful commands: `pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data and security
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Supabase Auth handles accounts and sessions. Project definitions, scenarios, request previews, and documentation snapshots are stored in the user's `preapix_workspaces` Supabase row and protected by row-level security. The public mock endpoint resolves the project key through the `preapix_get_mock_project` RPC, so generated URLs stay short: `/api/mock/{projectKey}/{apiPath}`.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run the SQL migration before using the dashboard or mock endpoints. Endpoint response definitions are public to anyone who has the project's public key and URL; never put secrets in mock responses. Dashboard previews are recorded in the workspace; external endpoint requests are not currently logged. Keep `.env` out of source control. `/api/health` reports app readiness.

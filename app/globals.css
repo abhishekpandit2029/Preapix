@@ -1,26 +1,520 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --background: #090e18;
+  --foreground: #f4f7fc;
+  --text-secondary: #a7b2c4;
+  --muted: #a7b2c4;
+  --surface: #0e1624;
+  --surface-raised: #131e2f;
+  --surface-hover: #19263a;
+  --code-surface: #0a111d;
+  --border: #202d40;
+  --border-strong: #2d3d55;
+  --primary: #6c8cff;
+  --primary-hover: #5275f5;
+  --primary-soft: rgba(108, 140, 255, 0.12);
+  --accent-cyan: #06b6d4;
+  --text-muted: #667085;
+  --success: #22c55e;
+  --success-soft: rgba(34, 197, 94, 0.1);
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.1);
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.1);
+  --info: #38bdf8;
+  --info-soft: rgba(56, 189, 248, 0.1);
+  --method-patch: #a78bfa;
+  --method-patch-soft: rgba(167, 139, 250, 0.1);
+  --panel: #0d1117;
+  --panel-border: #202630;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-slate-950: var(--background);
+  --color-slate-900: var(--surface);
+  --color-slate-800: var(--surface-raised);
+  --color-slate-700: var(--border);
+  --color-slate-600: #475467;
+  --color-slate-500: var(--text-muted);
+  --color-slate-400: var(--muted);
+  --color-slate-300: var(--text-secondary);
+  --color-slate-200: var(--foreground);
+  --color-slate-100: var(--foreground);
+  --color-slate-50: var(--foreground);
+  --color-blue-500: var(--primary);
+  --color-blue-600: var(--primary-hover);
+  --color-blue-400: var(--primary);
+  --color-blue-300: var(--primary);
+  --color-blue-200: var(--primary);
+  --color-emerald-500: var(--success);
+  --color-emerald-400: var(--success);
+  --color-emerald-300: var(--success);
+  --color-rose-500: var(--danger);
+  --color-rose-400: var(--danger);
+  --color-rose-300: var(--danger);
+  --color-rose-200: var(--danger);
+  --color-red-500: var(--danger);
+  --color-red-400: var(--danger);
+  --color-red-300: var(--danger);
+  --color-amber-500: var(--warning);
+  --color-amber-400: var(--warning);
+  --color-amber-300: var(--warning);
+  --color-sky-500: var(--info);
+  --color-sky-400: var(--info);
+  --color-sky-300: var(--info);
+  --color-cyan-400: var(--accent-cyan);
+  --color-cyan-300: var(--accent-cyan);
+  --color-violet-400: var(--method-patch);
+  --color-violet-300: var(--method-patch);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme="light"] {
+  color-scheme: light;
+  --background: #f5f7fb;
+  --foreground: #111a2b;
+  --text-secondary: #44516a;
+  --muted: #44516a;
+  --surface: #ffffff;
+  --surface-raised: #f1f4fa;
+  --surface-hover: #e9eef7;
+  --code-surface: #f4f6fa;
+  --border: #dfe5ef;
+  --border-strong: #cbd5e4;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-soft: rgba(37, 99, 235, 0.08);
+  --accent-cyan: #0284c7;
+  --text-muted: #64748b;
+  --success: #16a34a;
+  --success-soft: rgba(22, 163, 74, 0.1);
+  --warning: #d97706;
+  --warning-soft: rgba(217, 119, 6, 0.1);
+  --danger: #dc2626;
+  --danger-soft: rgba(220, 38, 38, 0.1);
+  --info: #0284c7;
+  --info-soft: rgba(2, 132, 199, 0.1);
+  --method-patch: #7c3aed;
+  --method-patch-soft: rgba(124, 58, 237, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(96, 165, 250, 0.35);
+}
+
+.app-shell {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.landing-shell {
+  overflow: hidden;
+  background: radial-gradient(ellipse 75% 34% at 50% 0%, rgba(37, 99, 235, 0.10), transparent 100%), #08090c;
+}
+
+.landing-hero {
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035), 0 32px 100px rgba(0, 0, 0, 0.18);
+}
+
+.landing-code-card {
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glass-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.code-surface {
+  background: var(--code-surface);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+[data-theme="light"] body {
+  background: var(--background);
+}
+
+[data-theme="light"] .dashboard-shell {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+[data-theme="light"] .dashboard-shell [class*="bg-[#08090c]"] {
+  background-color: var(--surface-hover);
+}
+
+[data-theme="light"] .dashboard-shell [class*="bg-[#0d1117]"] {
+  background-color: var(--surface);
+}
+
+[data-theme="light"] .dashboard-shell [class*="bg-[#11161d]"] {
+  background-color: var(--surface-raised);
+}
+
+[data-theme="light"] .dashboard-shell [class*="bg-[#151b23]"] {
+  background-color: var(--surface-raised);
+}
+
+[data-theme="light"] .dashboard-shell [class*="border-[#202630]"] {
+  border-color: var(--border);
+}
+
+[data-theme="light"] .dashboard-shell [class*="border-[#2a323d]"] {
+  border-color: var(--border-strong);
+}
+
+[data-theme="light"] .dashboard-shell .text-slate-100,
+[data-theme="light"] .dashboard-shell .text-slate-50 {
+  color: var(--foreground);
+}
+
+[data-theme="light"] .dashboard-shell .text-slate-200 {
+  color: #1e293b;
+}
+
+[data-theme="light"] .dashboard-shell .text-slate-300 {
+  color: #334155;
+}
+
+[data-theme="light"] .dashboard-shell .text-slate-400 {
+  color: #475569;
+}
+
+[data-theme="light"] .dashboard-shell .text-slate-500 {
+  color: #64748b;
+}
+
+[data-theme="light"] .dashboard-shell .text-slate-600 {
+  color: #64748b;
+}
+
+[data-theme="light"] .dashboard-shell .text-white {
+  color: var(--foreground);
+}
+
+[data-theme="light"] .text-white {
+  color: var(--foreground);
+}
+
+[data-theme="light"] a.bg-blue-500.text-white,
+[data-theme="light"] button.bg-blue-500.text-white {
+  color: #ffffff;
+}
+
+[data-theme="light"] .dashboard-shell .bg-blue-500\/6 {
+  background-color: var(--primary-soft);
+}
+
+[data-theme="light"] .dashboard-shell .bg-black\/60 {
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+[data-theme="light"] .code-surface,
+[data-theme="light"] .dashboard-shell pre {
+  background: var(--code-surface);
+  border-color: var(--border);
+}
+
+.method-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 6px;
+  padding: 3px 7px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.method-get {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.method-post {
+  color: var(--success);
+  background: var(--success-soft);
+}
+
+.method-put {
+  color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.method-patch {
+  color: var(--method-patch);
+  background: var(--method-patch-soft);
+}
+
+.method-delete {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.status-success {
+  color: var(--success);
+  background: var(--success-soft);
+}
+
+.status-info {
+  color: var(--info);
+  background: var(--info-soft);
+}
+
+.status-warning {
+  color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.status-danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.status-text-success {
+  color: var(--success);
+}
+
+.status-text-info {
+  color: var(--info);
+}
+
+.status-text-warning {
+  color: var(--warning);
+}
+
+.status-text-danger {
+  color: var(--danger);
+}
+
+.dashboard-shell .glass-panel {
+  border-radius: 12px;
+}
+
+.dashboard-shell {
+  background:
+    radial-gradient(760px 420px at 12% -16%, rgba(85, 117, 245, 0.16), transparent 72%),
+    radial-gradient(660px 420px at 96% 8%, rgba(24, 169, 196, 0.06), transparent 70%),
+    var(--background);
+}
+
+.landing-shell {
+  background:
+    radial-gradient(ellipse 74% 44% at 50% -8%, rgba(91, 120, 255, 0.18), transparent 100%),
+    radial-gradient(ellipse 34% 34% at 86% 36%, rgba(29, 177, 205, 0.07), transparent 100%),
+    var(--background);
+}
+
+.glass-panel,
+.dashboard-shell .glass-panel {
+  border-color: color-mix(in srgb, var(--border) 82%, white 4%);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 94%, white 6%), var(--surface));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035), 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.landing-hero {
+  position: relative;
+  isolation: isolate;
+  border-color: color-mix(in srgb, var(--border-strong) 80%, var(--primary) 20%);
+  background:
+    radial-gradient(ellipse 70% 70% at 100% 0%, rgba(86, 117, 245, 0.12), transparent 72%),
+    linear-gradient(145deg, color-mix(in srgb, var(--surface) 90%, white 5%), var(--surface));
+  box-shadow: 0 36px 100px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.landing-code-card {
+  border-color: color-mix(in srgb, var(--border-strong) 72%, var(--primary) 28%);
+  background: linear-gradient(155deg, #111b2b, #090f19 75%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-topbar {
+  background-color: color-mix(in srgb, var(--background) 86%, transparent);
+  box-shadow: 0 1px 0 var(--border), 0 12px 28px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-nav button {
+  min-height: 42px;
+  border: 1px solid transparent;
+  color: var(--muted);
+}
+
+.dashboard-nav button:hover {
+  border-color: var(--border);
+  background-color: color-mix(in srgb, var(--surface) 80%, transparent);
+}
+
+.dashboard-nav button[aria-current="page"] {
+  position: relative;
+  border-color: var(--border);
+  background: var(--surface-raised);
+  color: var(--foreground);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.dashboard-nav button[aria-current="page"]::before {
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: -1px;
+  width: 2px;
+  border-radius: 0 3px 3px 0;
+  background: var(--primary);
+  content: "";
+}
+
+.metric-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 94%, white 6%), var(--surface));
+  padding: 16px;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--primary) 38%, var(--border));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.metric-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.metric-value {
+  color: var(--foreground);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-shell input,
+.dashboard-shell textarea,
+.dashboard-shell select {
+  border-radius: 8px;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+
+.dashboard-shell input:focus,
+.dashboard-shell textarea:focus,
+.dashboard-shell select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.dashboard-shell input[type="checkbox"] {
+  accent-color: var(--primary);
+}
+
+.dashboard-shell button:not([aria-label="Close command menu"]) {
+  transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.dashboard-shell button:disabled {
+  cursor: not-allowed;
+}
+
+.dashboard-shell table tbody tr {
+  transition: background-color 120ms ease;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border-strong) 75%, transparent);
+  background-clip: padding-box;
+}
+
+@media (max-width: 767px) {
+  .dashboard-sidebar {
+    position: relative;
+    height: auto;
+  }
+
+  .metric-card {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-shell main h1 { font-size: 1.45rem; }
+  .dashboard-shell .metric-value { font-size: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
