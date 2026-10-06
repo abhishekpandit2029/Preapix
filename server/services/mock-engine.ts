@@ -1,7 +1,7 @@
 import { normalizeApiPath, parseJson } from "@/lib/utils";
 import { generateFromReference } from "@/lib/mock-generator";
 
-type MockDefinition = { id: string; name: string; method: string; path: string; statusCode: number; responseBody: string; responseHeaders: string; delayMs: number; enabled: boolean; scenarios: Array<{ enabled: boolean; name: string; statusCode?: number; responseBody?: string; responseHeaders?: string; delayMs?: number | null }> };
+type MockDefinition = { id: string; name: string; method: string; path: string; statusCode: number; responseBody: string; responseHeaders: string; delayMs: number; enabled: boolean; generationCount?: number; scenarios: Array<{ enabled: boolean; name: string; statusCode?: number; responseBody?: string; responseHeaders?: string; delayMs?: number | null }> };
 export type MockProjectSnapshot = { publicKey: string; mockApis: MockDefinition[] };
 
 function matchRoutePattern(pattern: string, pathname: string) {
@@ -114,7 +114,7 @@ export async function resolveMockRequest(input: {
     Object.entries(responseHeaders).map(([key, value]) => [key.toLowerCase(), String(value)]),
   );
 
-  const randomizedBody = generateFromReference(parsedResponseBody);
+  const randomizedBody = generateFromReference(parsedResponseBody, candidate.generationCount ?? 20);
   const responsePayload = typeof randomizedBody === "string" ? randomizedBody : JSON.stringify(randomizedBody ?? null, null, 2);
   const responseType = headerMap["content-type"] ?? "application/json; charset=utf-8";
 

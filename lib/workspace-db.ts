@@ -4,7 +4,7 @@ import { normalizeApiPath, normalizeResponseHeaders } from "@/lib/utils";
 
 export type LocalScenario = { id: string; name: string; description?: string | null; statusCode: number; responseBody: string; responseHeaders: string; delayMs: number; enabled: boolean };
 export type LocalRequestLog = { id: string; method: string; path: string; statusCode: number; requestHeaders?: string | null; queryParams?: string | null; requestBody?: string | null; responseHeaders?: string | null; responseBody?: string | null; responseTimeMs?: number | null; createdAt: string };
-export type LocalMockApi = { id: string; name: string; description?: string | null; method: string; path: string; statusCode: number; responseBody: string; responseHeaders: string; delayMs: number; enabled: boolean; scenarios: LocalScenario[]; requestLogs: LocalRequestLog[] };
+export type LocalMockApi = { id: string; name: string; description?: string | null; method: string; path: string; statusCode: number; responseBody: string; responseHeaders: string; delayMs: number; enabled: boolean; generationCount?: number; scenarios: LocalScenario[]; requestLogs: LocalRequestLog[] };
 export type LocalProject = { id: string; name: string; description?: string | null; publicKey: string; mockApis: LocalMockApi[] };
 type Workspace = { projects: LocalProject[]; published: Record<string, { slug: string; version: number; publishedAt: string; snapshot: LocalMockApi }[]>; activity: { id: string; summary: string; action: string; createdAt: string; actor: { name: string; email: string } | null }[] };
 
@@ -53,7 +53,10 @@ export async function loadWorkspaceProjects(userId: string) {
 
 export async function seedLocalWorkspace(userId: string) {
   await updateWorkspace(userId, (workspace) => {
-    if (workspace.projects.length) return;
+    if (workspace.projects.length) {
+      workspace.projects.forEach((project) => project.mockApis.forEach((api) => { api.enabled = true; }));
+      return;
+    }
     const projectId = id();
     const usersApi: LocalMockApi = { id: id(), name: "User list", description: "Returns sample user data", method: "GET", path: "/users", statusCode: 200, responseBody: json({ success: true, data: [{ id: 1, name: "Abhishek", email: "abhishek@example.com" }] }), responseHeaders: json({ "Content-Type": "application/json" }), delayMs: 150, enabled: true, requestLogs: [], scenarios: [{ id: id(), name: "server-error", description: "Simulates an API failure for QA", statusCode: 500, responseBody: json({ success: false, message: "Server error" }), responseHeaders: json({ "Content-Type": "application/json" }), delayMs: 120, enabled: false }] };
     const project: LocalProject = { id: projectId, name: "Demo Workspace", description: "Your private Supabase-backed mock API workspace.", publicKey: key(), mockApis: [usersApi, { id: id(), name: "Create user", description: "Creates a user payload", method: "POST", path: "/users", statusCode: 201, responseBody: json({ success: true, data: { id: 101, created: true } }), responseHeaders: json({ "Content-Type": "application/json" }), delayMs: 200, enabled: true, scenarios: [], requestLogs: [] }] };
@@ -86,11 +89,13 @@ export async function saveMockApi(userId: string, projectId: string, input: Part
     if (/[\s?#]/.test(path)) throw new Error("API paths cannot contain spaces, query strings, or fragments.");
     if (!Number.isInteger(input.statusCode) || input.statusCode < 200 || input.statusCode > 599) throw new Error("Status code must be between 200 and 599.");
     if (!Number.isInteger(input.delayMs) || input.delayMs < 0 || input.delayMs > 60_000) throw new Error("Response delay must be between 0 and 60,000 ms.");
+    const generationCount = input.generationCount ?? 20;
+    if (!Number.isInteger(generationCount) || generationCount < 1 || generationCount > 1000) throw new Error("Generated response item count must be between 1 and 1,000.");
     if (project.mockApis.some((api) => api.id !== input.id && api.method === method && routesEquivalent(api.path, path))) throw new Error(`An API already exists for ${method} ${path}.`);
     JSON.parse(input.responseBody); const responseHeaders = normalizeResponseHeaders(input.responseHeaders);
     let api = project.mockApis.find((item) => item.id === input.id);
-    if (!api) { api = { id: id(), name, description: input.description?.trim() ?? "", method, path, statusCode: input.statusCode, responseBody: input.responseBody, responseHeaders, delayMs: input.delayMs, enabled: input.enabled, scenarios: [], requestLogs: [] }; project.mockApis.unshift(api); }
-    else Object.assign(api, { ...input, method, path, name, description: input.description?.trim() ?? "", responseHeaders });
+    if (!api) { api = { id: id(), name, description: input.description?.trim() ?? "", method, path, statusCode: input.statusCode, responseBody: input.responseBody, responseHeaders, delayMs: input.delayMs, enabled: true, generationCount, scenarios: [], requestLogs: [] }; project.mockApis.unshift(api); }
+    else Object.assign(api, { ...input, method, path, name, description: input.description?.trim() ?? "", responseHeaders, enabled: true, generationCount });
     addActivity(workspace, `${input.id ? "Updated" : "Created"} ${method} ${path}`, input.id ? "update" : "create"); return api;
   });
   return (await listLocalProjects(userId)).find((project) => project.id === projectId)?.mockApis.find((api) => api.id === saved.id) ?? saved;

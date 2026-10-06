@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { ThemeProvider } from "./theme-provider";
 import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
+  display: "swap",
   subsets: ["latin"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
+  display: "swap",
   subsets: ["latin"],
 });
 
@@ -23,7 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning className="min-h-full bg-slate-950 text-slate-100">{children}</body>
+      <body suppressHydrationWarning className="min-h-full bg-slate-950 text-slate-100"><ThemeProvider>{children}</ThemeProvider></body>
     </html>
   );
 }

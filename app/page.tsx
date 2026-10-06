@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ChevronRight, CheckCircle2, Code2, Database, Layers3, Sparkles, Zap } from "lucide-react";
 
 const featureList = [
@@ -21,15 +22,7 @@ export default function Home() {
       <div className="app-shell px-4 pb-28 pt-5 sm:px-8 lg:px-10">
         <header className="glass-panel sticky top-4 z-20 mb-10 rounded-xl px-4 py-3 sm:px-6">
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 ring-1 ring-blue-500/20">
-                <Code2 className="h-4 w-4 text-blue-300" />
-              </div>
-              <div>
-              <p className="text-sm font-semibold tracking-[0.18em] text-white uppercase">Preapix</p>
-                <p className="mt-0.5 text-[10px] font-medium tracking-wide text-slate-500">Mock API workspace</p>
-              </div>
-            </div>
+            <Link href="/" className="flex items-center" aria-label="Preapix home"><Image src="/preapix-logo-primary.svg" alt="Preapix" width={170} height={48} className="brand-logo-light h-10 w-auto" /><Image src="/preapix-logo-primary-dark.svg" alt="Preapix" width={170} height={48} className="brand-logo-dark h-10 w-auto" /></Link>
 
             <nav className="hidden items-center gap-8 text-sm text-slate-300 md:flex">
               <a href="#product" className="transition hover:text-white">Product</a>
@@ -49,14 +42,14 @@ export default function Home() {
           </div>
         </header>
 
-        <section id="product" className="landing-hero grid items-center gap-12 rounded-3xl border border-[#202630] bg-[#0d1117]/70 px-5 py-10 sm:px-9 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-12 lg:py-16">
+        <section id="product" className="landing-hero grid items-center gap-12 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/70 px-5 py-10 sm:px-9 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-12 lg:py-16">
           <div className="max-w-xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/8 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-300">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/8 px-3 py-1.5 text-micro font-semibold uppercase tracking-[0.16em] text-blue-300">
               <Sparkles className="h-3.5 w-3.5" />
               A mock backend for frontend teams
             </div>
 
-            <h1 className="max-w-[12ch] text-[42px] font-semibold leading-[1.06] tracking-[-0.055em] text-white sm:text-6xl">
+            <h1 className="max-w-[12ch] text-3xl font-semibold leading-[1.06] tracking-[-0.055em] text-white sm:text-6xl">
               Build the interface. Let the backend catch up.
             </h1>
 
@@ -91,22 +84,22 @@ export default function Home() {
           </div>
 
           <div className="relative">
-            <div className="landing-code-card overflow-hidden rounded-2xl border border-[#2a323d] bg-[#08090c] p-4 sm:p-5">
+            <div className="landing-code-card overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--background)] p-4 sm:p-5">
               <div className="mb-4 flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
                   <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
                 </div>
-                <div className="rounded-full border border-slate-700 bg-slate-800/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-slate-300">
+                <div className="rounded-full border border-slate-700 bg-slate-800/80 px-2.5 py-1 text-micro uppercase tracking-[0.2em] text-slate-300">
                   Demo project
                 </div>
               </div>
 
-              <div className="code-surface overflow-x-auto rounded-lg p-4 font-mono text-[13px] text-slate-200">
+              <div className="code-surface overflow-x-auto rounded-lg p-4 font-mono text-sm text-slate-200">
                 <div className="flex items-center justify-between pb-4 text-slate-400">
                   <span className="flex items-center gap-2"><span className="method-badge method-get">GET</span><code>/users</code></span>
-                  <span className="status-success rounded-md px-2 py-1 text-[10px] font-semibold">200 OK</span>
+                  <span className="status-success rounded-md px-2 py-1 text-micro font-semibold">200 OK</span>
                 </div>
 
                 <div className="space-y-2 text-slate-300">
@@ -132,7 +125,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="mt-24 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <section id="features" className="mt-12 grid gap-6 sm:mt-16 md:grid-cols-2 xl:grid-cols-4">
           {[
             { icon: Database, title: "Real endpoints", text: "Turn definitions into working HTTP routes with realistic responses and delays." },
             { icon: Layers3, title: "Scenarios", text: "Create success, error and empty states for every API contract." },
@@ -149,7 +142,7 @@ export default function Home() {
           ))}
         </section>
 
-        <section id="how-it-works" className="mt-24">
+        <section id="how-it-works" className="mt-12 sm:mt-16">
           <div className="mb-8 text-center">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">How it works</p>
             <h2 className="text-3xl font-semibold text-white">DEFINE API → GENERATE REAL ENDPOINT</h2>
@@ -169,7 +162,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="docs" className="mt-24 rounded-xl border border-slate-700 bg-slate-900/70 p-5 sm:p-8">
+        <section id="docs" className="mt-12 rounded-xl border border-slate-700 bg-slate-900/70 p-5 sm:mt-16 sm:p-8">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-200">Developer-first docs</p>
@@ -183,13 +176,13 @@ export default function Home() {
 
           <div className="mt-8 code-surface overflow-x-auto rounded-lg p-5 font-mono text-sm text-slate-200">
             <div className="text-blue-300">const response = await fetch(</div>
-          <div className="break-all pl-6 text-sky-300">&quot;http://localhost:3000/api/mock/projectKey/users&quot;</div>
+            <div className="break-all pl-6 text-sky-300">&quot;https://your-app.com/api/mock/px_project_key/users&quot;</div>
             <div className="text-blue-300">);</div>
             <div className="mt-2 text-blue-300">const data = await response.json();</div>
           </div>
         </section>
 
-        <section className="mt-24 grid gap-8 rounded-3xl border border-[#202630] bg-gradient-to-br from-blue-500/10 via-[#0e1624] to-[#0e1624] p-6 sm:p-10 lg:grid-cols-[1fr_0.85fr] lg:items-center">
+        <section className="mt-12 grid gap-8 rounded-3xl border border-[var(--border)] bg-gradient-to-br from-blue-500/10 via-[var(--surface)] to-[var(--surface)] p-6 sm:mt-16 sm:p-10 lg:grid-cols-[1fr_0.85fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-300">Made for the in-between</p>
             <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">Keep your frontend moving while services take shape.</h2>
@@ -201,9 +194,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto mt-24 max-w-3xl" aria-labelledby="faq-heading">
+        <section className="mx-auto mt-12 max-w-3xl sm:mt-16" aria-labelledby="faq-heading">
           <div className="mb-8 text-center"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-300">Frequently asked</p><h2 id="faq-heading" className="mt-3 text-3xl font-semibold tracking-tight text-white">A few useful details</h2></div>
-          <div className="divide-y divide-[#202630] rounded-2xl border border-[#202630] bg-[#0e1624]/75 px-5">
+          <div className="divide-y divide-[var(--border)] rounded-2xl border border-[var(--border)] bg-[var(--surface)]/75 px-5">
             {[
               ["Where is my mock data stored?", "Your projects, API definitions, and request previews are stored in your Supabase database and are available when you sign in on another device."],
               ["Can I generate realistic collections?", "Yes. Add a representative JSON object and use Generate 20+ random records to expand arrays while keeping the same response structure."],
@@ -212,7 +205,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="mt-24 flex flex-col items-center justify-between gap-4 border-t border-[#202630] py-8 text-xs text-slate-500 sm:flex-row">
+        <footer className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[var(--border)] py-8 text-xs text-slate-500 sm:mt-16 sm:flex-row">
           <Link href="/" className="font-semibold tracking-[0.16em] text-slate-300">PREAPIX</Link>
           <p>Mock APIs for the work between design and delivery.</p>
           <Link href="/dashboard" className="text-slate-400 transition hover:text-white">Open workspace <ArrowRight className="ml-1 inline h-3 w-3" /></Link>

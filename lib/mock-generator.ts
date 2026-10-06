@@ -1,12 +1,12 @@
-export function generateFromReference(reference: unknown): unknown {
+export function generateFromReference(reference: unknown, itemCount = 20): unknown {
   const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
   const words = ["Avery", "Jordan", "Morgan", "Riley", "Taylor", "Casey", "Quinn", "Reese"];
   const domains = ["example.com", "sample.dev", "mail.test"];
   const visit = (value: unknown, keyName = ""): unknown => {
     const key = keyName.toLowerCase();
     if (Array.isArray(value)) {
-      if (value.length > 0 && value.length < 20 && value.every((item) => item && typeof item === "object" && !Array.isArray(item))) {
-        return Array.from({ length: 20 }, (_, index) => visit(value[index % value.length], keyName));
+      if (value.length > 0 && value.every((item) => item && typeof item === "object" && !Array.isArray(item))) {
+        return Array.from({ length: itemCount }, (_, index) => visit(value[index % value.length], keyName));
       }
       return value.map((item) => visit(item, keyName));
     }
