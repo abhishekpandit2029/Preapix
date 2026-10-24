@@ -8,19 +8,6 @@ export function normalizeApiPath(value: string) {
   return normalized.replace(/\/+/g, "/").replace(/\/$/, "") || "/";
 }
 
-export function sanitizeJsonString(value: string | null | undefined, fallback: string) {
-  if (!value || !value.trim()) {
-    return fallback;
-  }
-
-  try {
-    JSON.parse(value);
-    return value;
-  } catch {
-    return fallback;
-  }
-}
-
 export function normalizeResponseHeaders(value: string) {
   let parsed: unknown;
   try { parsed = JSON.parse(value); } catch { throw new Error("Response headers must contain valid JSON."); }
@@ -46,32 +33,4 @@ export function parseJson<T>(value: string | null | undefined, fallback: T): T {
   } catch {
     return fallback;
   }
-}
-
-export function stringifyJson(value: unknown) {
-  if (typeof value === "string") {
-    return value;
-  }
-
-  return JSON.stringify(value, null, 2);
-}
-
-export function toNumber(value: unknown, fallback: number) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-export function createPublicKey(seed: string) {
-  const digest = seed
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 24);
-
-  return digest || `project-${Date.now().toString(36)}`;
-}
-
-export function buildEndpointUrl(projectKey: string, path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/api/mock/${projectKey}${normalizeApiPath(path)}`;
 }

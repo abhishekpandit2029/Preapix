@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Preapix | Mock APIs for modern frontend teams",
+  title: "Preapix",
   description: "Build mock APIs in seconds and generate real endpoints for frontend development.",
 };
 
