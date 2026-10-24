@@ -271,7 +271,7 @@ type DashboardView = "overview" | "apis" | "settings";
 
 type Scenario = { id: string; name: string; description?: string | null; statusCode: number; responseBody: string; responseHeaders: string; delayMs: number; enabled: boolean };
 type WorkspaceApi = MockApi & { scenarios: Scenario[] };
-type WorkspaceProject = Project & { mockApis: WorkspaceApi[] };
+type WorkspaceProject = Omit<Project, "mockApis"> & { mockApis: WorkspaceApi[] };
 type WorkspaceData = {
   projects: WorkspaceProject[];
   published: Record<string, { slug: string; version: number; publishedAt: string; snapshot: WorkspaceApi }[]>;
